@@ -9,15 +9,20 @@ include_directories(../../../../../common/c_cpp/src/c)
 add_definitions(-DBRIDGE)
 
 add_library(mamaplugindqstrategy
-            MODULE dqstrategyplugin.c
+            SHARED dqstrategyplugin.c
                    dqstrategyplugin.h)
 target_link_libraries(mamaplugindqstrategy mama)
 set_target_properties(mamaplugindqstrategy PROPERTIES OUTPUT_NAME "mamaplugindqstrategy${OPENMAMA_LIBRARY_SUFFIX}")
 
 if (MSVC)
     install(FILES $<TARGET_PDB_FILE:mamaplugindqstrategy> DESTINATION bin OPTIONAL)
-endif()
-install(TARGETS mamaplugindqstrategy
+    install(TARGETS mamaplugindqstrategy
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
+        LIBRARY DESTINATION bin
         ARCHIVE DESTINATION lib)
+else ()
+    install(TARGETS mamaplugindqstrategy
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib)
+endif ()
